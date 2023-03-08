@@ -1,0 +1,42 @@
+
+#problem>pre>span{
+    display: block;
+}
+
+#problem{
+    padding: 20px;
+    padding-left: 3px;
+    display: block;
+    height: 100%;
+    margin-top: 20px;
+    margin-left: 3px;
+    color: white;
+    overflow: auto;
+    width: 100%;
+    /* word-wrap: break-word; */
+    /* overflow-x: scroll */
+}
+
+#problem>p{
+    margin-bottom: 32px;
+    font-weight: 600;
+    font-size: 17px!important;
+    line-height: 1.7em;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    color: white;
+}
+
+#problem>pre{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    white-space: break-spaces;
+    display: block;
+    margin: 1em 0px;
+    word-spacing: 4px;
+    word-wrap: break-word;
+}
