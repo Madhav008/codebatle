@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const STATUSES = Object.freeze({
@@ -14,50 +14,50 @@ export const LOGINSTATUS = Object.freeze({
 
 
 const initialState = {
-    userData:{},
-    status:STATUSES.IDLE,
-    loginStatus:LOGINSTATUS.NOTLOGEDIN
+    userData: {},
+    status: STATUSES.IDLE,
+    loginStatus: LOGINSTATUS.NOTLOGEDIN
 }
 
 
 export const userSlice = createSlice({
-    name:'user',
+    name: 'user',
     initialState,
-    reducers:{
-   
-        setUserdata:(state,action)=>{
+    reducers: {
+
+        setUserdata: (state, action) => {
             state.userData = action.payload;
         },
 
-        setStatus:(state,action)=>{
+        setStatus: (state, action) => {
             state.status = action.payload;
         },
 
-        setLoginStatus:(state,action)=>{
+        setLoginStatus: (state, action) => {
             state.loginStatus = action.payload;
         },
     }
 })
 
-export const {setStatus,setUserdata,setLoginStatus} = userSlice.actions;
+export const { setStatus, setUserdata, setLoginStatus } = userSlice.actions;
 export default userSlice.reducer;
 
 
 
-export function validateUser(cokkie,username){
-    return async function validateUserThunk(dispatch,getState){
+export function validateUser(cokkie, username) {
+    return async function validateUserThunk(dispatch, getState) {
         dispatch(setStatus(STATUSES.LOADING));
         try {
-            
+
             var data = JSON.stringify({
-                "username":username,
-                "cokkie":cokkie
+                "username": username,
+                "cokkie": cokkie
             })
 
             var config = {
-                method:'Post',
-                maxBodyLength:Infinity,
-                url:`${import.meta.env.VITE_API_BASE_URL}/validate/`,
+                method: 'Post',
+                maxBodyLength: Infinity,
+                url: `${import.meta.env.VITE_API_BASE_URL}/validate/`,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'content-type': 'application/json',
@@ -68,12 +68,13 @@ export function validateUser(cokkie,username){
             const res = await axios(config)
             console.log(res.data.success);
             dispatch(setStatus(STATUSES.IDLE));
-            if(res.data.success===true) {
+            if (res.data.success === true) {
                 dispatch(setUserdata(JSON.parse(data)));
                 dispatch(setLoginStatus(LOGINSTATUS.LOGEDIN));
+                localStorage.setItem('dataKey', JSON.stringify(data));
             }
-            
-            
+
+
         } catch (error) {
             console.error(error.message);
             dispatch(setStatus(STATUSES.ERROR));

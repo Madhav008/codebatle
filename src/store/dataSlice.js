@@ -48,11 +48,71 @@ export const dataSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setMyRoom, setRooms, setStatus ,setNext,setPrev,resetRoom} = dataSlice.actions
+export const { setMyRoom, setRooms, setStatus ,setNext,setPrev,resetMyRoom} = dataSlice.actions
 
 export default dataSlice.reducer
+export function leaveRoom(roomName, username) {
+    return async function createroomThunk(dispatch, getState) {
+        dispatch(setStatus(STATUSES.LOADING));
+        try {
+            var data = JSON.stringify({
+                "roomname": roomName,
+                "name": username
+            });
+
+            var config = {
+                method: 'Post',
+                maxBodyLength: Infinity,
+                url: `${import.meta.env.VITE_API_BASE_URL}/leave`,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data: data
+            };
 
 
+            const res = await axios(config)
+
+            dispatch(setStatus(STATUSES.IDLE));
+        } catch (err) {
+            console.log(err);
+            dispatch(setStatus(STATUSES.ERROR));
+        }
+    };
+}
+export function joinRoom(roomName, username) {
+    return async function createroomThunk(dispatch, getState) {
+        dispatch(setStatus(STATUSES.LOADING));
+        try {
+            var data = JSON.stringify({
+                "roomname": roomName,
+                "name": username
+            });
+
+            var config = {
+                method: 'Post',
+                maxBodyLength: Infinity,
+                url: `${import.meta.env.VITE_API_BASE_URL}/join`,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                data: data
+            };
+
+
+            const res = await axios(config)
+
+            dispatch(setStatus(STATUSES.IDLE));
+        } catch (err) {
+            console.log(err);
+            dispatch(setStatus(STATUSES.ERROR));
+        }
+    };
+}
 export function createroom(difficulty, roomName, username) {
     return async function createroomThunk(dispatch, getState) {
         dispatch(setStatus(STATUSES.LOADING));
@@ -108,6 +168,32 @@ export function getRooms() {
         } catch (err) {
             console.log(err);
             dispatch(setStatus(STATUSES.ERROR));
+        }
+    };
+}
+
+export function getRoomByName(roomname) {
+    return async function getRoomsThunk(dispatch, getState) {
+        dispatch(setStatus(STATUSES.LOADING));
+        try {
+
+            var config = {
+                method: 'GET',
+                url: `${import.meta.env.VITE_API_BASE_URL}/room/${roomname}`,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            };
+
+
+            const res = await axios(config)
+            dispatch(setMyRoom(res.data));
+            dispatch(setStatus(STATUSES.IDLE));
+        } catch (err) {
+            dispatch(setStatus(STATUSES.ERROR));
+            console.log(err);
         }
     };
 }

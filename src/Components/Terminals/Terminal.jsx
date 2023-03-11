@@ -76,11 +76,11 @@ const Terminal = () => {
       <div className="bg-gray-700 p-4 rounded-lg text-white h-[100%] flex flex-col justify-between">
 
 
-        {myoutput.compare_result == undefined ? (
+        {myoutput.compare_result !== null && (
           <>
-            <p className={myoutput.correct_answer ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
+            {myoutput.status_msg != null && <p className={myoutput.correct_answer ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
               {myoutput.correct_answer ? status : "Wrong Answer"} <span className="ml-2">Runtime: {runtime}ms</span>
-            </p>
+            </p>}
             <div className="p-3 border border-gray-500" style={{ whiteSpace: "pre-wrap" }}>
               <h4 className="font-bold">Input:</h4>
               {compile_error ?
@@ -95,10 +95,28 @@ const Terminal = () => {
               <div className="p-2 border border-gray-300">
                 {output}
               </div>
+
+             {myoutput.expected_code_answer!=null&&<>
               <h4 className="font-bold mt-3">Expected Output:</h4>
               <div className="p-2 border border-gray-300">
                 {expected}
               </div>
+             </>}
+              {myoutput.total_correct != null &&
+                <>
+                  <h4 className="font-bold mt-3">Testcases:</h4>
+                  <div className="p-2 border border-gray-300">
+                    {myoutput.total_correct}/{myoutput.total_testcases}
+                  </div>
+                </>
+              }
+              {myoutput.runtime_percentile && <>
+                <h4 className="font-bold mt-3">Faster Then:</h4>
+                <div className="p-2 border border-gray-300">
+                  {myoutput.runtime_percentile}%
+                </div>
+              </>
+              }
               {stdout && stdout[0].length > 0 && (
                 <div>
                   <h4 className="font-bold mt-3">stdout:</h4>
@@ -110,23 +128,17 @@ const Terminal = () => {
             </div>
 
           </>
-        ) : (<div>
+        ) }
+
+{/* 
+: (<div>
           <p className={myoutput.total_correct === myoutput.total_testcases ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
             {myoutput.total_correct === myoutput.total_testcases ? "Accepted" : "Wrong Answer"} <span className="ml-2">Runtime: {myoutput.status_runtime}</span>
           </p>
-          <h4 className="font-bold mt-3">Testcases:</h4>
-          <div className="p-2 border border-gray-300">
-            {myoutput.total_correct}/{myoutput.total_testcases}
-          </div>
 
-          {myoutput.runtime_percentile && <>
-            <h4 className="font-bold mt-3">Faster Then:</h4>
-            <div className="p-2 border border-gray-300">
-              {myoutput.runtime_percentile}%
-            </div>
-          </>
-          }
-        </div>)}
+
+
+        </div>)} */}
         <div className="flex  mt-4">
           <button className="bg-blue-500 px-4 py-2 rounded-lg text-white mr-4" onClick={submit}>
             Submit

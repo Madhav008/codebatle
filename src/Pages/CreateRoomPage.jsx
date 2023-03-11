@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { createroom } from '../store/dataSlice';
+import { createroom, resetMyRoom, setStatus, STATUSES } from '../store/dataSlice';
 
 const CreateRoomPage = () => {
     const [difficulty, setDifficulty] = useState('');
@@ -62,7 +62,9 @@ const CreateRoomPage = () => {
         if (!difficulty || !roomName || !username) {
             return;
         }
+        dispatch(resetMyRoom())
         dispatch(createroom(difficulty, roomName, username))
+        dispatch(setStatus(STATUSES.LOADING))
         navigate('/batle');
         
         // props.socket.emit(ACTIONS.JOIN, {username,roomname:roomName});

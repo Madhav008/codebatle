@@ -5,12 +5,13 @@ import Problems from '../Components/Problems/Problems'
 import InputTerminal from '../Components/Terminals/InputTerminal'
 import Terminal from '../Components/Terminals/Terminal'
 import { useDispatch, useSelector } from 'react-redux'
-import { setNext, setPrev, setStatus, STATUSES } from '../store/dataSlice'
+import { getRoomByName, joinRoom, leaveRoom, setNext, setPrev, setStatus, STATUSES } from '../store/dataSlice'
 import { useEffect } from 'react'
 import { resetMyCode, setMyCode, setMyInput, setMyLang, setQid, setTitleSlug, setvisited } from '../store/codeSlice'
 import ACTIONS from '../Actions'
 import toast, { Toaster } from 'react-hot-toast';
 import { initSocket } from '../socket'
+// import { useParams } from 'react-router-dom'
 
 
 const RoomPage = () => {
@@ -20,40 +21,60 @@ const RoomPage = () => {
     const [difficulty, setDifficulty] = useState();
     const [lang, setlang] = useState('java');
     const [timer, setTimer] = useState({ h: 0, m: 0, s: 0 });
-    const { status:roomstatus, myroom, Number: number } = useSelector((state) => state.roomdata)
+    const { status: roomstatus, myroom, Number: number } = useSelector((state) => state.roomdata)
     const { problems, roomname, ownername } = myroom
 
     const dispatch = useDispatch();
-    const { visited, mycode, input } = useSelector((state) => state.code)
+    const { visited, mycode, input,status:codeStatus } = useSelector((state) => state.code)
 
-    const {userData} = useSelector((state)=>state.user)
-    const {username} = userData;
+    const { userData } = useSelector((state) => state.user)
+    const { username } = userData;
+    // const { roomid } = useParams();
 
+
+    /* JOIN ROOM FROM THE LINK ================================================================================*/
+    /*  useEffect(() => {
+         console.log(roomid)
+         function getRoomByLink() {
+             dispatch(getRoomByName(roomid))
+         }
+         getRoomByLink()
+     }, []) */
+    /* ======================================================================================================= */
     useEffect(() => {
-        dispatch(resetMyCode())
-        setDifficulty(problems[number].question.difficulty)
-        setquestion(problems[number].problem)
-        setTitle(problems[number].question.title)
-        dispatch(setMyLang(lang))
-        dispatch(setTitleSlug(problems[number].question.titleSlug))
-        let inputstring = "";
-        problems[number].testcases.data.question.exampleTestcaseList.forEach(element => {
-            inputstring += element + '\n'
-        });
-        dispatch(setMyInput(inputstring))
-        dispatch(setQid(problems[number].editordata.data.question.questionId))
-        let obj = problems[number].editordata.data.question.codeSnippets.find(o => o.langSlug === lang);
-        dispatch(setMyCode(obj.code))
-        dispatch(setStatus(STATUSES.IDLE))
-        // setCode(obj.code)
 
+        function fetchRoomData(){
 
-    }, [number])
+            dispatch(resetMyCode())
+            setDifficulty(problems[number].question.difficulty)
+            setquestion(problems[number].problem)
+            setTitle(problems[number].question.title)
+            dispatch(setMyLang(lang))
+            dispatch(setTitleSlug(problems[number].question.titleSlug))
+            let inputstring = "";
+            problems[number].testcases.data.question.exampleTestcaseList.forEach(element => {
+                inputstring += element + '\n'
+            });
+            dispatch(setMyInput(inputstring))
+            dispatch(setQid(problems[number].editordata.data.question.questionId))
+            let obj = problems[number].editordata.data.question.codeSnippets.find(o => o.langSlug === lang);
+            dispatch(setMyCode(obj.code))
+            // dispatch(setStatus(STATUSES.IDLE))
+            // setCode(obj.code)
+        }
+
+        if(problems) {
+            fetchRoomData();
+        }
+
+    }, [roomstatus,codeStatus,problems])
 
 
     /* Socket Code================================================================================================================== */
     const socketRef = useRef(null);
     const [clients, setClients] = useState();
+
+
     useEffect(() => {
         const init = async () => {
             socketRef.current = await initSocket();
@@ -67,6 +88,7 @@ const RoomPage = () => {
             }
 
             //Join The Room
+            dispatch(joinRoom(roomname, username))
             socketRef.current.emit(ACTIONS.JOIN, {
                 roomname,
                 username: username,
@@ -99,6 +121,7 @@ const RoomPage = () => {
         };
         init();
         return () => {
+            dispatch(leaveRoom(roomname, username))
             socketRef.current.disconnect();
             socketRef.current.off(ACTIONS.JOINED);
             socketRef.current.off(ACTIONS.DISCONNECTED);
@@ -118,7 +141,7 @@ const RoomPage = () => {
     }, [socketRef.current]);
 
 
-    if (roomstatus === STATUSES.LOADING) {
+    if (roomstatus === STATUSES.LOADING||codeStatus===STATUSES.LOADING || myroom == null || problems == null || problems.length == 0) {
         return <LoaderSpinner />
     }
 
@@ -146,7 +169,7 @@ const RoomPage = () => {
                     </main>
                     <div className="w-[25%] h-[100vh]">
                         <div className="flex flex-col justify-between h-[100%]">
-                            <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases}/>
+                            <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
                             <Terminal />
                         </div>
                     </div>
@@ -155,7 +178,7 @@ const RoomPage = () => {
         </>
     )
 
-    function resetTestcases(){
+    function resetTestcases() {
         let inputstring = "";
         problems[number].testcases.data.question.exampleTestcaseList.forEach(element => {
             inputstring += element + '\n'
