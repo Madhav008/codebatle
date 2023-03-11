@@ -14,7 +14,7 @@ const Terminal = () => {
 
   const [status, setStatus] = useState("");
   const dispatch = useDispatch();
-  const { input: myInput, titleSlug, language, mycode, qid, myoutput, status: loadingStatus } = useSelector((state) => state.code)
+  const { input: myInput, titleSlug, language, mycode, qid, myoutput, outputStatus: loadingStatus } = useSelector((state) => state.code)
 
 
 

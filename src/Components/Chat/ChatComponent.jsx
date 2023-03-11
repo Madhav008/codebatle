@@ -14,11 +14,14 @@ const ChatComponent = ({socket}) => {
     const [currentMessage, setCurrentMessage] = useState([])
 
     useEffect(() => {
-        socket.current.on("receive_message", (data) => {
-            setCurrentMessage((list)=>[...list,data])
-            console.log(data);
-        })
-    }, [socket])
+        if(socket.current){
+            socket.current.on("receive_message", (data) => {
+                setCurrentMessage((list)=>[...list,data])
+                console.log(data);
+            })
+        }
+        
+    }, [socket.current])
 
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
@@ -47,7 +50,7 @@ const ChatComponent = ({socket}) => {
 
         <div className='h-max'>
                 <ScrollToBottom>
-            <div className="w-full px-5 flex flex-col justify-between overflow-y-scroll h-[300px] ">
+            <div className="w-full px-5 flex flex-col justify-between  h-[250px] ">
                 {/* Header */}
                 <div className="flex  py-3 border-b-2">
                     <div className=" flex items-center justify-between gap-2 m-auto">
@@ -83,7 +86,7 @@ const ChatComponent = ({socket}) => {
                 {/* Send Messages Form */}
             <div className="h-[10px] m-0 divider"></div>
 
-            <div className="flex flex-row mt-2 rounded-xl w-full px-4 ">
+            <div className="flex flex-row mt-2 mb-1 rounded-xl w-full px-4 ">
                 <div className="flex-grow ml-2 mr-2">
                     <div className="relative">
                         <div className='flex border rounded-xl justify-between p-2 h-10'>

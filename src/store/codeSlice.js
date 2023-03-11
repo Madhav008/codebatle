@@ -18,6 +18,7 @@ const initialState = {
     language: {},
     qid:{},
     status: STATUSES.IDLE,
+    outputStatus:STATUSES.IDLE,
 }
 
 
@@ -53,6 +54,9 @@ export const codeSlice = createSlice({
         setStatus(state, action) {
             state.status = action.payload;
         },
+        setOutputStatus(state, action) {
+            state.outputStatus = action.payload;
+        },
         setQid(state, action) {
             state.qid = action.payload;
         },
@@ -62,12 +66,12 @@ export const codeSlice = createSlice({
     }
 })
 
-export const { setMyCode, resetMyCode, getMyCode, setvisited, setMyInput, setMyOutput, setTitleSlug, setMyLang,setStatus,setQid } = codeSlice.actions
+export const { setMyCode, resetMyCode, getMyCode, setvisited, setMyInput, setMyOutput, setTitleSlug, setMyLang,setStatus,setOutputStatus,setQid } = codeSlice.actions
 export default codeSlice.reducer
 
 export function runCode(titleSlug, code, testcases, language,qid) {
     return async function runCodeThunk(dispatch, getState) {
-        dispatch(setStatus(STATUSES.LOADING));
+        dispatch(setOutputStatus(STATUSES.LOADING));
         const username = getState().user.userData.username;
         try {
             var data = JSON.stringify({
@@ -94,16 +98,16 @@ export function runCode(titleSlug, code, testcases, language,qid) {
 
             const res = await axios(config)
             dispatch(setMyOutput(res.data));
-            dispatch(setStatus(STATUSES.IDLE));
+            dispatch(setOutputStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);
-            dispatch(setStatus(STATUSES.ERROR));
+            dispatch(setOutputStatus(STATUSES.ERROR));
         }
     };
 }
 export function submitCode(titleSlug, code, testcases, lang,qid) {
     return async function submitCodeThunk(dispatch, getState) {
-        dispatch(setStatus(STATUSES.LOADING));
+        dispatch(setOutputStatus(STATUSES.LOADING));
         const username = getState().user.userData.username;
         try {
             var data = JSON.stringify({
@@ -131,10 +135,10 @@ export function submitCode(titleSlug, code, testcases, lang,qid) {
 
             const res = await axios(config)
             dispatch(setMyOutput(res.data));
-            dispatch(setStatus(STATUSES.IDLE));
+            dispatch(setOutputStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);
-            dispatch(setStatus(STATUSES.ERROR));
+            dispatch(setOutputStatus(STATUSES.ERROR));
         }
     };
 }

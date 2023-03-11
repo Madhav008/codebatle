@@ -68,7 +68,7 @@ const RoomPage = () => {
             fetchRoomData();
         }
 
-    }, [roomstatus,codeStatus,problems,number])
+    }, [roomstatus,problems,number])
 
 
     /* Socket Code================================================================================================================== */
