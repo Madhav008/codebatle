@@ -8,7 +8,30 @@ import Jobs from "./Pages/Jobs"
 import LoginPage from "./Pages/LoginPage"
 import { useSelector } from "react-redux"
 import { LOGINSTATUS } from "./store/userSlice"
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 function App() {
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBVCM4QrVQDSWqpWORptFVv4yIVai6Kqqw",
+        authDomain: "briklin-2e342.firebaseapp.com",
+        projectId: "briklin-2e342",
+        storageBucket: "briklin-2e342.appspot.com",
+        messagingSenderId: "440810007685",
+        appId: "1:440810007685:web:831405cce83855ad790dec",
+        measurementId: "G-40QSQX6WL5"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const { loginStatus } = useSelector((state) => state.user)
 
     // const { socket } = useSelector((state) => state.roomdata)

@@ -11,7 +11,7 @@ const Terminal = () => {
   const [expected, setExpected] = useState("");
   const [compile_error, setcompile_error] = useState("");
   const [full_compile_error, setfull_compile_error] = useState("");
-
+  const [type, setType] = useState("");
   const [status, setStatus] = useState("");
   const dispatch = useDispatch();
   const { input: myInput, titleSlug, language, mycode, qid, myoutput, outputStatus: loadingStatus } = useSelector((state) => state.code)
@@ -48,12 +48,13 @@ const Terminal = () => {
   const submit = () => {
     dispatch(submitCode(titleSlug, mycode, myInput, language, qid))
     setInput(myInput);
-
+    setType('submit');
   };
 
   const run = () => {
     dispatch(runCode(titleSlug, mycode, myInput, language, qid))
     setInput(myInput);
+    setType('run');
   };
 
 
@@ -70,6 +71,113 @@ const Terminal = () => {
     )
   }
 
+
+  if (type === 'submit') {
+    return (
+      <>
+
+        <div className="container ">
+          <div className="bg-gray-700 p-4 rounded-lg text-white h-[100%] flex flex-col justify-between">
+            {myoutput.compare_result !== null && (
+              <>
+                {
+                  myoutput.total_correct === myoutput.total_testcases ?
+                    <p className='text-green-400 text-lg font-bold'>
+                      Accepted <span className="ml-2">Runtime: {myoutput.status_runtime}</span>
+                    </p> : <p className={myoutput.correct_answer ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
+                      {myoutput.correct_answer ? status : "Wrong Answer"} <span className="ml-2">Runtime: {runtime}ms</span>
+                    </p>
+                }
+
+                <div className="p-3 border border-gray-500" style={{ whiteSpace: "pre-wrap" }}>
+
+                  {compile_error ?
+                    <>
+                      <h4 className="font-bold">Input:</h4>
+                      <div className="p-2 border border-gray-300 text-red-500 font-bold">
+                        {compile_error}
+                      </div>
+                    </> :
+                    <>
+                      <h4 className="font-bold">Input:</h4>
+                      {myoutput.status_msg === 'Wrong Answer' && <div className="p-2 border border-gray-300">
+                        {myoutput.last_testcase}
+                      </div>}
+                    </>
+                  }
+
+                  {myoutput.status_msg == 'Wrong Answer' && <>
+                    <h4 className="font-bold mt-3">Output:</h4>
+                    <div className="p-2 border border-gray-300">
+                      {myoutput.code_output}
+                    </div>
+                  </>}
+
+                  {myoutput.status_msg == 'Wrong Answer' && <>
+                    <h4 className="font-bold mt-3">Expected Output:</h4>
+                    <div className="p-2 border border-gray-300">
+                      {myoutput.expected_output}
+                    </div>
+                  </>}
+
+                  {myoutput.expected_code_answer != null && <>
+                    <h4 className="font-bold mt-3">Expected Output:</h4>
+                    <div className="p-2 border border-gray-300">
+                      {myoutput.expected_code_answer}
+                    </div>
+                  </>}
+                  {myoutput.total_correct != null &&
+                    <>
+                      <h4 className="font-bold mt-3">Testcases:</h4>
+                      <div className="p-2 border border-gray-300">
+                        {myoutput.total_correct}/{myoutput.total_testcases}
+                      </div>
+                    </>
+                  }
+                  {myoutput.runtime_percentile && <>
+                    <h4 className="font-bold mt-3">Faster Then:</h4>
+                    <div className="p-2 border border-gray-300">
+                      {myoutput.runtime_percentile}%
+                    </div>
+                  </>
+                  }
+                  {stdout && stdout[0].length > 0 && (
+                    <div>
+                      <h4 className="font-bold mt-3">stdout:</h4>
+                      <div className="p-2 border border-gray-300">
+                        {stdout}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+              </>
+            )}
+
+            {/* 
+: (<div>
+          <p className={myoutput.total_correct === myoutput.total_testcases ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
+            {myoutput.total_correct === myoutput.total_testcases ? "Accepted" : "Wrong Answer"} <span className="ml-2">Runtime: {myoutput.status_runtime}</span>
+          </p>
+
+
+
+        </div>)} */}
+            <div className="flex  mt-4">
+              <button className="bg-blue-500 px-4 py-2 rounded-lg text-white mr-4" onClick={submit}>
+                Submit
+              </button>
+              <button className="bg-blue-500 px-4 py-2 rounded-lg text-white" onClick={run}>
+                Run
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </>
+    )
+  }
   // console.log(correct_answer)
   return (
     <div className="container ">
@@ -78,9 +186,14 @@ const Terminal = () => {
 
         {myoutput.compare_result !== null && (
           <>
-            {myoutput.status_msg != null && <p className={myoutput.correct_answer ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
-              {myoutput.correct_answer ? status : "Wrong Answer"} <span className="ml-2">Runtime: {runtime}ms</span>
-            </p>}
+            {
+              myoutput.status_msg != null &&
+              <p className={myoutput.correct_answer ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
+                {myoutput.correct_answer ? status : "Wrong Answer"} <span className="ml-2">Runtime: {runtime}ms</span>
+              </p>
+            }
+
+
             <div className="p-3 border border-gray-500" style={{ whiteSpace: "pre-wrap" }}>
               <h4 className="font-bold">Input:</h4>
               {compile_error ?
@@ -96,12 +209,12 @@ const Terminal = () => {
                 {output}
               </div>
 
-             {myoutput.expected_code_answer!=null&&<>
-              <h4 className="font-bold mt-3">Expected Output:</h4>
-              <div className="p-2 border border-gray-300">
-                {expected}
-              </div>
-             </>}
+              {myoutput.expected_code_answer != null && <>
+                <h4 className="font-bold mt-3">Expected Output:</h4>
+                <div className="p-2 border border-gray-300">
+                  {expected}
+                </div>
+              </>}
               {myoutput.total_correct != null &&
                 <>
                   <h4 className="font-bold mt-3">Testcases:</h4>
@@ -128,9 +241,9 @@ const Terminal = () => {
             </div>
 
           </>
-        ) }
+        )}
 
-{/* 
+        {/* 
 : (<div>
           <p className={myoutput.total_correct === myoutput.total_testcases ? 'text-green-400 text-lg font-bold' : 'text-red-400 text-lg font-bold'}>
             {myoutput.total_correct === myoutput.total_testcases ? "Accepted" : "Wrong Answer"} <span className="ml-2">Runtime: {myoutput.status_runtime}</span>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { leaveRoom } from '../../store/dataSlice';
 
-const ChatComponent = ({socket}) => {
+const ChatComponent = ({socket,clients}) => {
     
     const { users, roomname } = useSelector((state) => state.roomdata.myroom)
     const {username} = useSelector((state) => state.user.userData)
@@ -52,14 +52,16 @@ const ChatComponent = ({socket}) => {
                 <ScrollToBottom>
             <div className="w-full px-5 flex flex-col justify-between  h-[250px] ">
                 {/* Header */}
-                <div className="flex  py-3 border-b-2">
-                    <div className=" flex items-center justify-between gap-2 m-auto">
+                <div className="flex  py-3 border-b-2 justify-between">
+                    {/* <div className=" flex items-center justify-between gap-2 m-auto">
 
                         <div className="badge badge-primary text-white">Invite</div>
                         <div onClick={() => { dispatch(leaveRoom()); navigate(`/`) }} className="badge badge-accent text-white">Leave</div>
                         {users&&<div className="badge badge-lg "> Joined {users.length}</div>}
-                    </div>
-
+                    </div> */}
+                    
+                    <h1><span className='text-lg font-bold text-white'>Roomname: </span>{roomname}  </h1>
+                    <h1 className='text-lg font-bold text-white'> Users {clients.length}</h1>
                 </div>
                 {/* Chat Messages */}
                     {

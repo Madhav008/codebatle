@@ -13,6 +13,7 @@
     "ace-builds": "^1.14.0",
     "daisyui": "^2.50.0",
     "dotenv": "^16.0.3",
+    "firebase": "^9.17.2",
     "flatted": "^3.2.7",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

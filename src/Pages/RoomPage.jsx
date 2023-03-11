@@ -20,11 +20,12 @@ const RoomPage = () => {
     const [question, setquestion] = useState();
     const [title, setTitle] = useState();
     const [difficulty, setDifficulty] = useState();
+    const [chat,setChat] = useState(true);
     const [lang, setlang] = useState('java');
     const [timer, setTimer] = useState({ h: 0, m: 0, s: 0 });
     const { status: roomstatus, myroom, Number: number } = useSelector((state) => state.roomdata)
     const { problems, roomname, ownername } = myroom
-
+    
     const dispatch = useDispatch();
     const { visited, mycode, input, status: codeStatus } = useSelector((state) => state.code)
 
@@ -172,16 +173,13 @@ const RoomPage = () => {
                         <Problems question={question} title={title} difficulty={difficulty} next={handleNext} prev={handlePrev} />
                     </div>
                     <main role="main" className="w-[60%]  ">
-                        {
-                            
                             <AceEditors code={mycode} lang={lang} setlangHandler={setlangHandler} timer={timer} socket={socketRef} roomname={roomname} ownerName={ownername} getCodeHandler={getCodeHandler} />
-                        }
                     </main>
                     <div className="w-[25%] h-[100vh]">
                         <div className="flex flex-col justify-between h-[100%]">
                             <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
                             <Terminal />
-                            {socketRef.current && <ChatComponent socket={socketRef} />}
+                            {socketRef.current && <ChatComponent socket={socketRef} clients={clients}/>}
                         </div>
                     </div>
                 </div>
@@ -199,19 +197,19 @@ const RoomPage = () => {
 
 
     function getCodeHandler(e) {
-        console.log(e)
+        // console.log(e)
         dispatch(setMyCode(e))
     }
 
     function setlangHandler(e) {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setlang(e.target.value);
         let obj = problems[number].editordata.data.question.codeSnippets.find(o => o.langSlug === e.target.value);
         dispatch(setMyCode(obj.code))
     }
 
     function getInput(e) {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         dispatch(setMyInput(e.target.value))
     }
 
