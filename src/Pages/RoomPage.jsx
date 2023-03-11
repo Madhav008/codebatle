@@ -11,6 +11,7 @@ import { resetMyCode, setMyCode, setMyInput, setMyLang, setQid, setTitleSlug, se
 import ACTIONS from '../Actions'
 import toast, { Toaster } from 'react-hot-toast';
 import { initSocket } from '../socket'
+import ChatComponent from '../Components/Chat/ChatComponent'
 // import { useParams } from 'react-router-dom'
 
 
@@ -67,7 +68,7 @@ const RoomPage = () => {
             fetchRoomData();
         }
 
-    }, [roomstatus,codeStatus,problems])
+    }, [roomstatus,codeStatus,problems,number])
 
 
     /* Socket Code================================================================================================================== */
@@ -171,6 +172,7 @@ const RoomPage = () => {
                         <div className="flex flex-col justify-between h-[100%]">
                             <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
                             <Terminal />
+                            <ChatComponent socket={socketRef}/>
                         </div>
                     </div>
                 </div>

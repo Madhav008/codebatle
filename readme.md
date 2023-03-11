@@ -65,7 +65,6 @@
         [*] Set the username from the leetcode api or cookie
         [*] remove the hardcoded username TestUser and Madhav in the Editor Page and JoinRoomPage and CreateRoomPage
         [] delete the room if no user is there
-        [] show the number of users in the room in join room page
     [*] Add the routes to the pages
     [] Setup Local Storage
         [*] Check if the cookie is valid
@@ -73,19 +72,24 @@
         [*] Pass username in each cookie function
         [*] Remove the globaly stored object in api
         [*] In get Userdata function or Validate function pass the cookie as argument
-        [] Save the session in local storage
-        [] Save the rooms in local storage
+        [*] Save the session in local storage
+        [*] Save the rooms in local storage
         [] Setup the Cookie
-
+    [] Room Settings
+        [*] Show the Joined clients number
+        [*] show the number of users in the room in join room page
+        [] Create the share link for the rooms
+        [] Add the chat box for the rooms
 ===============================================================================================================
 
 ## Bug
 
-    [] After creating the room the batle page not open some problem in loading
     [] Make output and input toogle
-    [] Save the user code in the state
-    [] Resize functionality is needed
+    [] Save the user code in the state 
+    [] Resize functionality is needed 
+    [] Reset the terminal on next question
 
+    [*] After creating the room the batle page not open some problem in loading
     [*] COOKIE is not set up in the api
     [*] Decode the cookie and get the csrf token
     [*] Problems is not visible perfectly
