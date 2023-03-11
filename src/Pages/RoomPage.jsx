@@ -26,7 +26,7 @@ const RoomPage = () => {
     const { problems, roomname, ownername } = myroom
 
     const dispatch = useDispatch();
-    const { visited, mycode, input,status:codeStatus } = useSelector((state) => state.code)
+    const { visited, mycode, input, status: codeStatus } = useSelector((state) => state.code)
 
     const { userData } = useSelector((state) => state.user)
     const { username } = userData;
@@ -44,7 +44,7 @@ const RoomPage = () => {
     /* ======================================================================================================= */
     useEffect(() => {
 
-        function fetchRoomData(){
+        function fetchRoomData() {
 
             dispatch(resetMyCode())
             setDifficulty(problems[number].question.difficulty)
@@ -52,23 +52,24 @@ const RoomPage = () => {
             setTitle(problems[number].question.title)
             dispatch(setMyLang(lang))
             dispatch(setTitleSlug(problems[number].question.titleSlug))
+            let obj = problems[number].editordata.data.question.codeSnippets.find(o => o.langSlug === lang);
+            dispatch(setMyCode(obj.code))
             let inputstring = "";
             problems[number].testcases.data.question.exampleTestcaseList.forEach(element => {
                 inputstring += element + '\n'
             });
             dispatch(setMyInput(inputstring))
             dispatch(setQid(problems[number].editordata.data.question.questionId))
-            let obj = problems[number].editordata.data.question.codeSnippets.find(o => o.langSlug === lang);
-            dispatch(setMyCode(obj.code))
+            
             // dispatch(setStatus(STATUSES.IDLE))
             // setCode(obj.code)
         }
 
-        if(problems) {
+        if (problems) {
             fetchRoomData();
         }
 
-    }, [roomstatus,problems,number])
+    }, [roomstatus, problems, number])
 
 
     /* Socket Code================================================================================================================== */
@@ -89,7 +90,10 @@ const RoomPage = () => {
             }
 
             //Join The Room
-            dispatch(joinRoom(roomname, username))
+            if (username && roomname) {
+                dispatch(joinRoom(roomname, username))
+            }
+
             socketRef.current.emit(ACTIONS.JOIN, {
                 roomname,
                 username: username,
@@ -122,7 +126,9 @@ const RoomPage = () => {
         };
         init();
         return () => {
-            dispatch(leaveRoom(roomname, username))
+            if (username && roomname) {
+                dispatch(leaveRoom(roomname, username))
+            }
             socketRef.current.disconnect();
             socketRef.current.off(ACTIONS.JOINED);
             socketRef.current.off(ACTIONS.DISCONNECTED);
@@ -142,7 +148,7 @@ const RoomPage = () => {
     }, [socketRef.current]);
 
 
-    if (roomstatus === STATUSES.LOADING||codeStatus===STATUSES.LOADING || myroom == null || problems == null || problems.length == 0) {
+    if (roomstatus === STATUSES.LOADING || codeStatus === STATUSES.LOADING || myroom == null || problems == null || problems.length == 0) {
         return <LoaderSpinner />
     }
 
@@ -166,13 +172,16 @@ const RoomPage = () => {
                         <Problems question={question} title={title} difficulty={difficulty} next={handleNext} prev={handlePrev} />
                     </div>
                     <main role="main" className="w-[60%]  ">
-                        <AceEditors code={mycode} lang={lang} setlangHandler={setlangHandler} timer={timer} socket={socketRef} roomname={roomname} ownerName={ownername} getCodeHandler={getCodeHandler} />
+                        {
+                            
+                            <AceEditors code={mycode} lang={lang} setlangHandler={setlangHandler} timer={timer} socket={socketRef} roomname={roomname} ownerName={ownername} getCodeHandler={getCodeHandler} />
+                        }
                     </main>
                     <div className="w-[25%] h-[100vh]">
                         <div className="flex flex-col justify-between h-[100%]">
                             <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
                             <Terminal />
-                            <ChatComponent socket={socketRef}/>
+                            {socketRef.current && <ChatComponent socket={socketRef} />}
                         </div>
                     </div>
                 </div>

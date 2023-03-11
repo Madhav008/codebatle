@@ -10,7 +10,7 @@ export const STATUSES = Object.freeze({
 
 
 const initialState = {
-    mycode: {},
+    mycode: "",
     visited: {},
     input: {},
     myoutput: {},
