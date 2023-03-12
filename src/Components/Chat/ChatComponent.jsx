@@ -4,13 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { leaveRoom } from '../../store/dataSlice';
 
-const ChatComponent = ({ socket, clients,currentMessage }) => {
+const ChatComponent = ({ socket, clients, currentMessage }) => {
 
     const { users, roomname } = useSelector((state) => state.roomdata.myroom)
     const { username } = useSelector((state) => state.user.userData)
     const [message, setMessage] = useState('')
-    
-    
+
+
     /* const [currentMessage, setCurrentMessage] = useState([])
 
     useEffect(() => {
@@ -60,7 +60,7 @@ const ChatComponent = ({ socket, clients,currentMessage }) => {
 </div> */}
 
                     <h1><span className='text-lg font-bold text-white'>Roomname: </span>{roomname}  </h1>
-                    <h1 className='text-lg font-bold text-white'> Users {clients===undefined?1:clients.length }</h1>
+                    <h1 className='text-lg font-bold text-white'> Users {clients === undefined ? 1 : clients.length}</h1>
                 </div>
                 <ScrollToBottom className='h-[calc(100vh-120px)]'>
                     {/* Chat Messages */}
@@ -71,11 +71,22 @@ const ChatComponent = ({ socket, clients,currentMessage }) => {
                                 {
                                     data.author === username ? (
                                         <div className="chat chat-end">
-                                            <div className="chat-bubble chat-bubble-primary opacity-[0.8]">{data.message}</div>
+
+                                            <div className="chat-header">
+                                                {username}
+                                                {/* <time className="text-xs opacity-50">{data.time}</time> */}
+                                            </div>
+                                            <div className="chat-bubble">{data.message}</div>
                                         </div>
                                     ) : (
                                         <div className="chat chat-start">
-                                            <div className="chat-bubble chat-bubble-primary opacity-[0.8]">{data.message}</div>
+
+
+                                            <div className="chat-header">
+                                                {data.author}
+                                                {/* <time className="text-xs opacity-50">{data.time}</time> */}
+                                            </div>
+                                            <div className="chat-bubble">{data.message}</div>
                                         </div>
                                     )
                                 }
