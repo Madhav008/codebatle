@@ -10,7 +10,7 @@ import { useSelector } from "react-redux"
 import { LOGINSTATUS } from "./store/userSlice"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics,logEvent } from "firebase/analytics";
 import ResizableRoomPage from "./Components/ResizableRoomPage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -33,8 +33,10 @@ function App() {
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
-    const { loginStatus } = useSelector((state) => state.user)
 
+    logEvent(analytics, 'homepage_visited');
+      const { loginStatus } = useSelector((state) => state.user)
+    
     // const { socket } = useSelector((state) => state.roomdata)
     return (
         <div className="App">
