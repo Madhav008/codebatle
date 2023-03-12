@@ -11,6 +11,7 @@ import { LOGINSTATUS } from "./store/userSlice"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import ResizableRoomPage from "./Components/ResizableRoomPage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -45,6 +46,7 @@ function App() {
                     <Route path="/batle" element={<RoomPage />} />
                     <Route path="/create" element={<CreateRoomPage />} />
                     <Route path="/jobs" element={<Jobs />} />
+                    <Route path="/roompage" element={<ResizableRoomPage />} />
                 </Routes>
             </Router>
         </div>

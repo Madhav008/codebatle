@@ -65,7 +65,8 @@ const CreateRoomPage = () => {
         dispatch(resetMyRoom())
         dispatch(createroom(difficulty, roomName, username))
         dispatch(setStatus(STATUSES.LOADING))
-        navigate('/batle');
+        // navigate('/batle');
+        navigate('/roompage')
         
         // props.socket.emit(ACTIONS.JOIN, {username,roomname:roomName});
     }

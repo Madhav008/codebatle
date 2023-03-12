@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.gutter {
+    background-color: #0b0f2895;
+
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+    background-image: url('https://raw.githubusercontent.com/nathancahill/split/master/packages/splitjs/grips/horizontal.png');
+    cursor: col-resize;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('https://raw.githubusercontent.com/nathancahill/split/master/packages/splitjs/grips/vertical.png');
+    cursor: row-resize;
+}

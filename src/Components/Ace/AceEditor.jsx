@@ -11,24 +11,45 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-c_cpp";
 import "ace-builds/src-noconflict/mode-python";
 import "ace-builds/src-noconflict/ext-language_tools";
-import { MdTimer } from "react-icons/md"
-import { useSelector } from "react-redux";
+import { MdOutlineArrowDropDown, MdOutlineArrowDropUp, MdTimer } from "react-icons/md"
+import { useDispatch, useSelector } from "react-redux";
+import InputTerminal from "../Terminals/InputTerminal";
+import Terminal from "../Terminals/Terminal";
+import { runCode, submitCode } from "../../store/codeSlice";
+
 const AceEditors = (props) => {
   const [size, setSize] = useState(20);
   const [theame, settheame] = useState("cobalt");
   const [hide, setHide] = useState('')
-
-  const {userData} = useSelector((state)=>state.user)
-  const {username} = userData;
+  const { userData } = useSelector((state) => state.user)
+  const { username } = userData;
   
+  
+  
+  const [Console, setConsole] = useState("");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <>
       <div className="bg-base-300 flex justify-end">
+
         <div className={hide}>
           {username == props.ownerName ? <button type="button" className=" ml-4 my-1 text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={() => { props.socket.current.emit("start_timer", props.roomname); setHide("hidden") }} >Start Battle</button>
             : null}
         </div>
-        <div className="ml-4  flex  items-center bg-gray-900 pl-1 rounded-md">
+        <div className="ml-4 flex items-center bg-transparent pl-1 rounded-md">
           <span className="text-2xl pb-1 pt-1 "> <MdTimer /></span>
           <span className="countdown font-mono text-2xl p-2 ">
             <span style={{ "--value": props.timer.h }}></span>:
@@ -40,7 +61,7 @@ const AceEditors = (props) => {
           <select
             className="p-2 rounded-lg w-full"
             value={size}
-            onChange={(e) =>  setSize(parseInt(e.target.value)) }
+            onChange={(e) => setSize(parseInt(e.target.value))}
           >
             <option value="">Font Size</option>
             <option value="14">14</option>
@@ -73,7 +94,7 @@ const AceEditors = (props) => {
           <select
             className="p-2 rounded-lg w-full"
             value={props.lang}
-            onChange={ props.setlangHandler}
+            onChange={props.setlangHandler}
           >
             <option value="">Language</option>
             <option value="java">java</option>
@@ -83,8 +104,9 @@ const AceEditors = (props) => {
 
           </select>
         </div>
+
       </div>
-      <div >
+      <div className="relative">
         <AceEditor
           mode={props.lang}
           theme={theame}
@@ -103,12 +125,35 @@ const AceEditors = (props) => {
           }} />
 
       </div>
+
+      
+
     </>
   );
 
+  function submit()  {
+    dispatch(submitCode(titleSlug, mycode, myInput, language, qid))
+    setType('submit');
+    
+  };
 
+  function run()  {
+    dispatch(runCode(titleSlug, mycode, myInput, language, qid))
+    setType('run');
+    setInput(myInput);
+    
+  };
 
-  
+  function handleConsole() {
+    setConsole((val) => {
+      if (val === 'hidden') {
+        return '';
+      } else {
+        return 'hidden';
+      }
+    });
+  }
+
 
 };
 

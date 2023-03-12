@@ -66,7 +66,7 @@ const JoinRoomPage = () => {
         //TODO: Which user has joined the room
         // props.socket.emit(ACTIONS.JOIN, {username:"TempUser",roomname:room.roomname});
         var roomid = room.roomname
-        navigate('/batle')
+        navigate('/roompage')
         // navigate(`/batle/${roomid}`);
         // props.socket.emit("start_timer", room.roomname);
 
