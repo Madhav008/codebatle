@@ -18,7 +18,7 @@ import Terminal from "../Terminals/Terminal";
 import { runCode, submitCode } from "../../store/codeSlice";
 
 const AceEditors = (props) => {
-  const [size, setSize] = useState(20);
+  const [size, setSize] = useState(16);
   const [theame, settheame] = useState("cobalt");
   const [hide, setHide] = useState('')
   const { userData } = useSelector((state) => state.user)

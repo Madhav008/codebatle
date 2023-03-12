@@ -158,6 +158,26 @@ const ResizableRoomPage = () => {
     const { input: myInput, titleSlug, language, qid, myoutput, outputStatus: loadingStatus } = useSelector((state) => state.code)
 
 
+
+
+    const [message, setMessage] = useState('')
+    
+    const [currentMessage, setCurrentMessage] = useState([])
+
+    useEffect(() => {
+        if (socketRef.current) {
+            socketRef.current.on("receive_message", (data) => {
+                setCurrentMessage((list) => [...list, data])
+                console.log(data);
+            })
+        }
+
+    }, [socketRef.current])
+
+
+
+
+
     // const { input: myInput, titleSlug, language, mycode, qid, myoutput, outputStatus: loadingStatus } = useSelector((state) => state.code)
     if (roomstatus === STATUSES.LOADING || codeStatus === STATUSES.LOADING || myroom == null || problems == null || problems.length == 0) {
         return <LoaderSpinner />
@@ -180,7 +200,7 @@ const ResizableRoomPage = () => {
                 ></Toaster>
             </div>
             <Split sizes={[30, 70, 20]}
-                minSize={400} className='flex ' style={{ height: '100vh' }}>
+                minSize={400} className='flex overflow-hidden' style={{ height: '100vh' }}>
                 <div className="w-[30%] h-[100vh] flex flex-col justify-between mx-3">
                     <Problems question={question} title={title} difficulty={difficulty} next={handleNext} prev={handlePrev} />
                 </div>
@@ -206,7 +226,7 @@ const ResizableRoomPage = () => {
                     }
 
 
-                    <div className="items-center w-[100%] flex bg-slate-900 px-2">
+                    <div className="items-center w-[100%] flex bg-slate-900 ">
                         <p className="text-lg font-semibold flex "
                             onClick={handleConsole}
                         >Console
@@ -223,8 +243,8 @@ const ResizableRoomPage = () => {
                     </div>
                 </main>
 
-                <div className="w-[25%] h-[60vh]">
-                    {socketRef.current && <ChatComponent socket={socketRef} clients={clients} />}
+                <div className="w-[25%] h-[90vh]">
+                    {socketRef.current && <ChatComponent socket={socketRef} clients={clients} currentMessage={currentMessage}/>}
                 </div>
 
             </Split>

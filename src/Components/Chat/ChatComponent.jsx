@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import ScrollToBottom from "react-scroll-to-bottom";
 import { leaveRoom } from '../../store/dataSlice';
 
-const ChatComponent = ({ socket, clients }) => {
+const ChatComponent = ({ socket, clients,currentMessage }) => {
 
     const { users, roomname } = useSelector((state) => state.roomdata.myroom)
     const { username } = useSelector((state) => state.user.userData)
     const [message, setMessage] = useState('')
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [currentMessage, setCurrentMessage] = useState([])
+    
+    
+    /* const [currentMessage, setCurrentMessage] = useState([])
 
     useEffect(() => {
         if (socket.current) {
@@ -21,7 +21,7 @@ const ChatComponent = ({ socket, clients }) => {
             })
         }
 
-    }, [socket.current])
+    }, [socket.current]) */
 
     const handleMessageChange = (event) => {
         setMessage(event.target.value);
@@ -62,7 +62,7 @@ const ChatComponent = ({ socket, clients }) => {
                     <h1><span className='text-lg font-bold text-white'>Roomname: </span>{roomname}  </h1>
                     <h1 className='text-lg font-bold text-white'> Users {clients===undefined?1:clients.length }</h1>
                 </div>
-                <ScrollToBottom className='h-[850px]'>
+                <ScrollToBottom className='h-[calc(100vh-120px)]'>
                     {/* Chat Messages */}
                     {
 
