@@ -60,7 +60,7 @@ const ChatComponent = ({ socket, clients }) => {
 </div> */}
 
                     <h1><span className='text-lg font-bold text-white'>Roomname: </span>{roomname}  </h1>
-                    <h1 className='text-lg font-bold text-white'> Users {clients.length}</h1>
+                    {clients&&<h1 className='text-lg font-bold text-white'> Users {clients.length}</h1>}
                 </div>
                 <ScrollToBottom className='h-[850px]'>
                     {/* Chat Messages */}
