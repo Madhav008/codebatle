@@ -76,7 +76,8 @@ const LoginPage = () => {
         if (!cokkie || !username) {
             return;
         }
-        dispatch(validateUser(cokkie, username))
+
+        dispatch(validateUser(cokkie, username.toLowerCase()))
         console.log("User validated");
 
         // props.socket.emit(ACTIONS.JOIN, {username,roomname:roomName});

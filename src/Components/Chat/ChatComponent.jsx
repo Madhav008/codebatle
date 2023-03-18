@@ -76,7 +76,7 @@ const ChatComponent = ({ socket, clients, currentMessage }) => {
                                                 {username}
                                                 {/* <time className="text-xs opacity-50">{data.time}</time> */}
                                             </div>
-                                            <div className="chat-bubble">{data.message}</div>
+                                            <div className="chat-bubble break-all	">{data.message}</div>
                                         </div>
                                     ) : (
                                         <div className="chat chat-start">
@@ -86,7 +86,7 @@ const ChatComponent = ({ socket, clients, currentMessage }) => {
                                                 {data.author}
                                                 {/* <time className="text-xs opacity-50">{data.time}</time> */}
                                             </div>
-                                            <div className="chat-bubble">{data.message}</div>
+                                            <div className="chat-bubble break-all">{data.message}</div>
                                         </div>
                                     )
                                 }

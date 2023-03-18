@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import './ace.css'
 import "ace-builds/src-noconflict/theme-github";
@@ -23,9 +23,9 @@ const AceEditors = (props) => {
   const [hide, setHide] = useState('')
   const { userData } = useSelector((state) => state.user)
   const { username } = userData;
-  
-  
-  
+
+
+
   const [Console, setConsole] = useState("");
 
 
@@ -33,6 +33,13 @@ const AceEditors = (props) => {
 
 
 
+  useEffect(() => {
+    if (props.timer.h === 0 && props.timer.m === 0 && props.timer.s === 0) {
+      setHide('');
+    } else {
+      setHide('hidden');
+    }
+  }, [props.timer])
 
 
 
@@ -45,11 +52,18 @@ const AceEditors = (props) => {
     <>
       <div className="bg-base-300 flex justify-end">
 
-        <div className={hide}>
-          {username == props.ownerName ? <button type="button" className=" ml-4 my-1 text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={() => { props.socket.current.emit("start_timer", props.roomname); setHide("hidden") }} >Start Battle</button>
-            : null}
-        </div>
+
         <div className="ml-4 flex items-center bg-transparent pl-1 rounded-md">
+          <span className={`mr-4  ${hide} dark:hover:border-green-500 dark:hover:text-green-500 dark:text-white dark:bg-green-600 dark:focus:ring-green-800 text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-1 py-1/2`}>
+            {username == props.ownerName ? <button type="button" onClick={
+              () => {
+                props.socket.current.emit("start_timer", props.roomname);
+                setHide("hidden")
+
+              }
+            } >Start Battle</button>
+              : null}
+          </span>
           <span className="text-2xl pb-1 pt-1 "> <MdTimer /></span>
           <span className="countdown font-mono text-2xl p-2 ">
             <span style={{ "--value": props.timer.h }}></span>:
@@ -106,7 +120,7 @@ const AceEditors = (props) => {
         </div>
 
       </div>
-      <div className="relative">
+      <div className={`relative ${hide === 'hidden' ? '' : 'blur-lg'}`}>
         <AceEditor
           mode={props.lang}
           theme={theame}
@@ -126,22 +140,22 @@ const AceEditors = (props) => {
 
       </div>
 
-      
+
 
     </>
   );
 
-  function submit()  {
+  function submit() {
     dispatch(submitCode(titleSlug, mycode, myInput, language, qid))
     setType('submit');
-    
+
   };
 
-  function run()  {
+  function run() {
     dispatch(runCode(titleSlug, mycode, myInput, language, qid))
     setType('run');
     setInput(myInput);
-    
+
   };
 
   function handleConsole() {
