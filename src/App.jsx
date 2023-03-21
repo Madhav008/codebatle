@@ -12,6 +12,7 @@ import { LOGINSTATUS } from "./store/userSlice"
 import { initializeApp } from "firebase/app";
 import { getAnalytics,logEvent } from "firebase/analytics";
 import ResizableRoomPage from "./Components/ResizableRoomPage"
+import { ROOMSTATUS } from "./store/dataSlice"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -37,18 +38,19 @@ function App() {
     logEvent(analytics, 'homepage_visited');
       const { loginStatus } = useSelector((state) => state.user)
     
-    // const { socket } = useSelector((state) => state.roomdata)
+    const { roomStatus } = useSelector((state) => state.roomdata)
     return (
         <div className="App">
 
             <Router>
                 <Routes>
                     <Route path="/" element={loginStatus === LOGINSTATUS.LOGEDIN ? <Welcome /> : <LoginPage />} />
-                    <Route path="/rooms" element={<JoinRoomPage />} />
+                    <Route path="/rooms" element={ roomStatus===ROOMSTATUS.IN_ROOM?<ResizableRoomPage />:<JoinRoomPage />} />
                     <Route path="/batle" element={<RoomPage />} />
-                    <Route path="/create" element={<CreateRoomPage />} />
+                    <Route path="/create" element={roomStatus===ROOMSTATUS.IN_ROOM?<ResizableRoomPage />:<CreateRoomPage />} />
                     <Route path="/jobs" element={<Jobs />} />
-                    <Route path="/roompage" element={<ResizableRoomPage />} />
+                    <Route path="/roompage" element={roomStatus===ROOMSTATUS.IN_ROOM?<ResizableRoomPage />:<Welcome/>} />
+                    
                 </Routes>
             </Router>
         </div>

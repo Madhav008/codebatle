@@ -6,12 +6,17 @@ export const STATUSES = Object.freeze({
     ERROR: "error",
     LOADING: "loading",
 });
-
+export const ROOMSTATUS = Object.freeze({
+    IN_ROOM: "in_room",
+    OUT_ROOM: "out_room",
+});
 const initialState = {
     myroom: {},
     rooms: [],
     Number: 0,
     status: STATUSES.IDLE,
+    roomStatus: ROOMSTATUS.OUT_ROOM
+
 }
 
 export const dataSlice = createSlice({
@@ -40,15 +45,17 @@ export const dataSlice = createSlice({
             } else {
                 state.Number = state.Number - 1;
             }
+        }, setRoomStatus: (state, action) => {
+            state.roomStatus = action.payload;
         },
         resetMyRoom(state) {
-            state.myroom= {};
+            state.myroom = {};
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setMyRoom, setRooms, setStatus ,setNext,setPrev,resetMyRoom} = dataSlice.actions
+export const { setMyRoom, setRooms, setStatus, setNext, setPrev, resetMyRoom,setRoomStatus } = dataSlice.actions
 
 export default dataSlice.reducer
 export function leaveRoom(roomName, username) {
@@ -74,7 +81,7 @@ export function leaveRoom(roomName, username) {
 
 
             const res = await axios(config)
-
+            dispatch(setRoomStatus(ROOMSTATUS.OUT_ROOM))
             dispatch(setStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);
@@ -105,7 +112,7 @@ export function joinRoom(roomName, username) {
 
 
             const res = await axios(config)
-
+            dispatch(setRoomStatus(ROOMSTATUS.IN_ROOM))
             dispatch(setStatus(STATUSES.IDLE));
         } catch (err) {
             console.log(err);

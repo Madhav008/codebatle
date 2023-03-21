@@ -13,10 +13,11 @@ export const LOGINSTATUS = Object.freeze({
 });
 
 
+
 const initialState = {
     userData: {},
     status: STATUSES.IDLE,
-    loginStatus: LOGINSTATUS.NOTLOGEDIN
+    loginStatus: LOGINSTATUS.NOTLOGEDIN,
 }
 
 
@@ -36,6 +37,7 @@ export const userSlice = createSlice({
         setLoginStatus: (state, action) => {
             state.loginStatus = action.payload;
         },
+       
     }
 })
 

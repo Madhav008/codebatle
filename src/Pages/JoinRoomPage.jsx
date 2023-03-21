@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Room from '../Components/Room';
 import { useDispatch, useSelector } from 'react-redux'
-import { getRooms, resetMyRoom, setMyRoom, setStatus, STATUSES } from '../store/dataSlice';
+import { getRooms, resetMyRoom, ROOMSTATUS, setMyRoom, setRoomStatus, setStatus, STATUSES } from '../store/dataSlice';
 import {  useNavigate } from 'react-router-dom';
 import LoaderSpinner from '../Components/LoaderSpinner';
 import { LOGINSTATUS, setLoginStatus, setUserdata } from '../store/userSlice';
@@ -63,6 +63,7 @@ const JoinRoomPage = () => {
     function handleJoin(room) {
         dispatch(setMyRoom(room))
         dispatch(setStatus(STATUSES.LOADING))
+        dispatch(setRoomStatus(ROOMSTATUS.IN_ROOM))
         //TODO: Which user has joined the room
         // props.socket.emit(ACTIONS.JOIN, {username:"TempUser",roomname:room.roomname});
         var roomid = room.roomname

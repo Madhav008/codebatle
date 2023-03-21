@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { createroom, resetMyRoom, setStatus, STATUSES } from '../store/dataSlice';
+import { createroom, resetMyRoom, ROOMSTATUS, setRoomStatus, setStatus, STATUSES } from '../store/dataSlice';
 
 const CreateRoomPage = () => {
     const [difficulty, setDifficulty] = useState('');
@@ -65,6 +65,7 @@ const CreateRoomPage = () => {
         dispatch(resetMyRoom())
         dispatch(createroom(difficulty, roomName, username))
         dispatch(setStatus(STATUSES.LOADING))
+        dispatch(setRoomStatus(ROOMSTATUS.IN_ROOM))
         // navigate('/batle');
         navigate('/roompage')
         

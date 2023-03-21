@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import ScrollToBottom from "react-scroll-to-bottom";
-import { leaveRoom } from '../../store/dataSlice';
+import { leaveRoom, ROOMSTATUS, setRoomStatus } from '../../store/dataSlice';
 
 const ChatComponent = ({ socket, clients, currentMessage }) => {
 
     const { users, roomname } = useSelector((state) => state.roomdata.myroom)
     const { username } = useSelector((state) => state.user.userData)
     const [message, setMessage] = useState('')
-
+    const dispatch = useDispatch();
 
     /* const [currentMessage, setCurrentMessage] = useState([])
 
@@ -52,15 +52,17 @@ const ChatComponent = ({ socket, clients, currentMessage }) => {
             <div className="w-full px-5 flex flex-col justify-between   ">
                 {/* Header */}
                 <div className="flex  py-3 border-b-2 justify-between">
-                    {/* <div className=" flex items-center justify-between gap-2 m-auto">
+                    <div className=" flex items-center justify-between gap-2 m-auto">
 
-<div className="badge badge-primary text-white">Invite</div>
-<div onClick={() => { dispatch(leaveRoom()); navigate(`/`) }} className="badge badge-accent text-white">Leave</div>
-{users&&<div className="badge badge-lg "> Joined {users.length}</div>}
-</div> */}
-
-                    <h1><span className='text-lg font-bold text-white'>Roomname: </span>{roomname}  </h1>
-                    <h1 className='text-lg font-bold text-white'> Users {clients === undefined ? 1 : clients.length}</h1>
+                        {/* <div className="badge badge-primary text-white">Invite</div> */}
+                        <div onClick={() => {
+                            dispatch(leaveRoom(roomname, username));
+                            dispatch(setRoomStatus(ROOMSTATUS.OUT_ROOM))
+                        }} className="badge badge-warning font-bold text-gray-700">Leave</div>
+                        {/* {users && <div className="badge badge-lg "> Joined {users.length}</div>} */}
+                        <span className='text-base font-bold badge  text-white'>{roomname}</span>
+                        <h1 className='text-lg font-bold text-white'> Users {clients === undefined ? 1 : clients.length}</h1>
+                    </div>
                 </div>
                 <ScrollToBottom className='h-[calc(100vh-120px)]'>
                     {/* Chat Messages */}
