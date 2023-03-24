@@ -1,0 +1,136 @@
+[
+    {
+        "id": 1,
+        "name": "First Restaurant",
+        "rating": "2",
+        "items": [
+            {
+                "id": 1,
+                "name": "First item",
+                "price": 200
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Second Restaurant",
+        "rating": "4",
+        "items": [
+            {
+                "id": 1,
+                "name": "Second item",
+                "price": 150
+            },
+            {
+                "id": 2,
+                "name": "Third item",
+                "price": 300
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Italian Delight",
+        "rating": "5",
+        "items": [
+            {
+                "id": 1,
+                "name": "Margherita Pizza",
+                "price": 400
+            },
+            {
+                "id": 2,
+                "name": "Pesto Pasta",
+                "price": 350
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Burger Joint",
+        "rating": "3",
+        "items": [
+            {
+                "id": 1,
+                "name": "Classic Burger",
+                "price": 250
+            },
+            {
+                "id": 2,
+                "name": "Bacon Cheeseburger",
+                "price": 350
+            },
+            {
+                "id": 3,
+                "name": "Veggie Burger",
+                "price": 200
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Sushi Spot",
+        "rating": "4.5",
+        "items": [
+            {
+                "id": 1,
+                "name": "California Roll",
+                "price": 500
+            },
+            {
+                "id": 2,
+                "name": "Spicy Tuna Roll",
+                "price": 600
+            },
+            {
+                "id": 3,
+                "name": "Salmon Nigiri",
+                "price": 350
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Mexican Grill",
+        "rating": "3.5",
+        "items": [
+            {
+                "id": 1,
+                "name": "Chicken Quesadilla",
+                "price": 300
+            },
+            {
+                "id": 2,
+                "name": "Beef Burrito",
+                "price": 350
+            },
+            {
+                "id": 3,
+                "name": "Veggie Fajitas",
+                "price": 250
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Indian Spice",
+        "rating": "4",
+        "items": [
+            {
+                "id": 1,
+                "name": "Butter Chicken",
+                "price": 450
+            },
+            {
+                "id": 2,
+                "name": "Naan Bread",
+                "price": 100
+            },
+            {
+                "id": 3,
+                "name": "Vegetable Samosas",
+                "price": 200
+            }
+        ]
+    }
+]

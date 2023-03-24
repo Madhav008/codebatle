@@ -13,6 +13,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics,logEvent } from "firebase/analytics";
 import ResizableRoomPage from "./Components/ResizableRoomPage"
 import { ROOMSTATUS } from "./store/dataSlice"
+import Takeaway from "./Pages/Takeaway"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -49,6 +50,8 @@ function App() {
                     <Route path="/batle" element={<RoomPage />} />
                     <Route path="/create" element={roomStatus===ROOMSTATUS.IN_ROOM?<ResizableRoomPage />:<CreateRoomPage />} />
                     <Route path="/jobs" element={<Jobs />} />
+                    <Route path="/takeawayy" element={<Takeaway />} />
+
                     <Route path="/roompage" element={roomStatus===ROOMSTATUS.IN_ROOM?<ResizableRoomPage />:<Welcome/>} />
                     
                 </Routes>
