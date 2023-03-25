@@ -120,7 +120,7 @@ export function joinRoom(roomName, username) {
         }
     };
 }
-export function createroom(difficulty, roomName, username) {
+export function createroom(difficulty, roomName, username,rating,number) {
     return async function createroomThunk(dispatch, getState) {
         dispatch(setStatus(STATUSES.LOADING));
         try {
@@ -133,7 +133,7 @@ export function createroom(difficulty, roomName, username) {
             var config = {
                 method: 'Post',
                 maxBodyLength: Infinity,
-                url: `${import.meta.env.VITE_API_BASE_URL}/create`,
+                url: `${import.meta.env.VITE_API_BASE_URL}/create?rating=${rating}&numbers=${number}`,
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'content-type': 'application/json',

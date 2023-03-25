@@ -10,7 +10,7 @@ const Jobs = () => {
         async function getJobs() {
             var config = {
                 method: 'GET',
-                url: 'http://localhost:5000/jobs',
+                url: 'http://localhost:2000/jobs',
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'content-type': 'application/json',
@@ -61,13 +61,13 @@ const Jobs = () => {
                                     </th>
 
                                     <th scope="row" className="flex text-center align-middle px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {/* <div class="relative h-10 w-10 mr-1">
+                                        <div class="relative h-10 w-10 mr-1">
                                             <img
                                                 class="h-full w-full rounded-full object-cover object-center"
-                                                src={job.image}
+                                                src={job.images}
                                                 alt=""
                                             />
-                                        </div> */}
+                                        </div>
                                         {job.title}
                                     </th>
                                     <td className="px-6 py-4">
