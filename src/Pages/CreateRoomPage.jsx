@@ -6,7 +6,9 @@ import { createroom, resetMyRoom, ROOMSTATUS, setRoomStatus, setStatus, STATUSES
 const CreateRoomPage = () => {
     const [difficulty, setDifficulty] = useState('');
     const [roomName, setRoomName] = useState('');
-    // const [username, setUsername] = useState('');
+    const [rating, setrating] = useState('');
+    const [contest, setcontest] = useState('');
+
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const {userData} = useSelector((state)=>state.user)
@@ -40,15 +42,26 @@ const CreateRoomPage = () => {
                         }}
                     />
                 </div>
-               {/*  <div className="mb-4">
-                    <label className="block font-medium mb-2">Username</label>
+                <div className="mb-4">
+                    <label className="block font-medium mb-2">Contest Number</label>
                     <input
                         type="text"
                         className="-300 p-2 rounded-lg"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        value={contest}
+                        placeholder="Optional"
+                        onChange={(e) => setcontest(e.target.value)}
                     />
-                </div> */}
+                </div>
+                <div className="mb-4">
+                    <label className="block font-medium mb-2">Rating Of Question</label>
+                    <input
+                        type="text"
+                        className="-300 p-2 rounded-lg"
+                        value={rating}
+                        placeholder="Optional"
+                        onChange={(e) => setrating(e.target.value)}
+                    />
+                </div>
                 <button onClick={handleSubmit} className="btn text-white py-2 px-4 rounded-lg hover:-700">
                     Create Room
                 </button>
@@ -63,7 +76,7 @@ const CreateRoomPage = () => {
             return;
         }
         dispatch(resetMyRoom())
-        dispatch(createroom(difficulty, roomName, username))
+        dispatch(createroom(difficulty, roomName, username,rating,contest))
         dispatch(setStatus(STATUSES.LOADING))
         dispatch(setRoomStatus(ROOMSTATUS.IN_ROOM))
         // navigate('/batle');
