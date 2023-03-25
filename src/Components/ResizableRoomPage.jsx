@@ -23,6 +23,7 @@ const ResizableRoomPage = () => {
     const [title, setTitle] = useState();
     const [difficulty, setDifficulty] = useState();
     const [chat, setChat] = useState(true);
+    const [classnme,setClass] = useState("input"); 
     const [lang, setlang] = useState('java');
     const [timer, setTimer] = useState({ h: 0, m: 0, s: 0 });
     const { status: roomstatus, myroom, Number: number } = useSelector((state) => state.roomdata)
@@ -161,7 +162,7 @@ const ResizableRoomPage = () => {
 
 
     const [message, setMessage] = useState('')
-    
+
     const [currentMessage, setCurrentMessage] = useState([])
 
     useEffect(() => {
@@ -219,9 +220,24 @@ const ResizableRoomPage = () => {
                                 <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
                             </svg>
                         </div> :
-                            <div className={`flex ${Console} justify-between h-[250px] mb-4 w-[100%] absolute z-10 bottom-10 right-20px left-20px `}>
-                                <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
-                                <Terminal input={terminalInput} type={type} run={run} submit={submit} />
+                            <div className={`flex ${Console} justify-between h-[250px] mb-4 w-[100%] absolute z-10 bottom-20 right-20px left-20px `}>
+                                <div className='flex-col w-[100%]'>
+                                    <div className='flex justify-between'>
+                                        <div className='flex'>
+                                        <label onClick={()=>toggleTerminal()} className={`block font-medium mb-2 tab ${classnme==='input'?'tab-active':''}`}>Input</label>
+                                        <label onClick={()=>toggleTerminal()} className={`block font-medium mb-2 tab ${classnme==='output'?'tab-active':''}`}>Output</label>
+                                        </div>
+                                        <button onClick={resetTestcases} className='btn btn-sm mb-2 text-white bg-blue-600'>Reset TestCases</button>
+                                    </div>
+                                    <div className={`h-[250px] ${classnme === "output" ? 'hidden' : ""}`}>
+
+                                        <InputTerminal getInput={getInput} input={input} resetTestcases={resetTestcases} />
+                                    </div>
+
+                                    <div className={`h-[250px] ${classnme === "input" ? 'hidden' : ""}`}>
+                                        <Terminal input={terminalInput} type={type} run={run} submit={submit} />
+                                    </div>
+                                </div>
                             </div>
                     }
 
@@ -244,13 +260,24 @@ const ResizableRoomPage = () => {
                 </main>
 
                 <div className="w-[25%] h-[90vh]">
-                    {socketRef.current && <ChatComponent socket={socketRef} clients={clients} currentMessage={currentMessage}/>}
+                    {socketRef.current && <ChatComponent socket={socketRef} clients={clients} currentMessage={currentMessage} />}
                 </div>
 
             </Split>
         </>
 
     )
+
+    function toggleTerminal(){
+        setClass((val) => {
+            if (val === 'input') {
+              return 'output';
+            }
+            if (val === 'output') {
+                return 'input';
+            } 
+          });
+    }
 
     function submit() {
         dispatch(submitCode(titleSlug, mycode, myInput, language, qid))

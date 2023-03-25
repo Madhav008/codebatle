@@ -6,10 +6,7 @@ const InputTerminal = (props) => {
  
   return (
     <div className="bg-gray-700 p-4 flex flex-col rounded-lg text-white container mb-4 h-[100%]">
-      <div className='flex justify-between'>
-      <label className="block font-medium mb-2">Input:</label>
-      <button onClick={props.resetTestcases} className='btn btn-sm mb-2 text-white bg-blue-600'>Reset TestCases</button>
-      </div>
+      
       <textarea
         value={props.input}
         onChange={props.getInput}

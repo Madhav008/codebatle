@@ -66,8 +66,8 @@ const Terminal = (props) => {
     return (
       <>
 
-        <div className="container">
-          <div className="bg-gray-700 p-4 rounded-lg overflow-y-scroll text-white w-[350px] h-[100%] flex flex-col justify-between">
+        <div className="container h-[100%]">
+          <div className="bg-gray-700 p-4 rounded-lg overflow-y-scroll text-white flex flex-col justify-between h-[100%]">
             {myoutput.compare_result !== null && (
               <>
                 {
@@ -79,7 +79,7 @@ const Terminal = (props) => {
                     </p>
                 }
 
-                <div className="p-3 border border-gray-500" style={{ whiteSpace: "pre-wrap" }}>
+                <div className="p-3 border border-gray-500 h-[100%]" style={{ whiteSpace: "pre-wrap" }}>
 
                   {compile_error ?
                     <>
@@ -170,8 +170,8 @@ const Terminal = (props) => {
   }
   // console.log(correct_answer)
   return (
-    <div className="container ">
-      <div className="bg-gray-700 p-4 rounded-lg overflow-y-scroll text-white h-[100%] flex flex-col justify-between">
+    <div className="container h-[100%]">
+      <div className="bg-gray-700 p-4 rounded-lg overflow-y-scroll text-white flex flex-col justify-between h-[100%]">
 
 
         {myoutput.compare_result !== null && (
@@ -184,7 +184,7 @@ const Terminal = (props) => {
             }
 
 
-            <div className="p-3 border border-gray-500" style={{ whiteSpace: "pre-wrap" }}>
+            <div className="p-3 border border-gray-500 h-[100%]" style={{ whiteSpace: "pre-wrap" }}>
               <h4 className="font-bold">Input:</h4>
               {compile_error ?
                 <div className="p-2 border border-gray-300 text-red-500 font-bold">
