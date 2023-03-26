@@ -140,14 +140,14 @@ const ResizableRoomPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, [])
-
+    
     useEffect(() => {
         if (socketRef.current) {
             socketRef.current.on(ACTIONS.NewTime, (data) => {
                 setTimer(data)
             })
         }
-
+        
         return () => {
             socketRef.current.off(ACTIONS.NewTime);
         };
@@ -157,7 +157,7 @@ const ResizableRoomPage = () => {
     const [type, setType] = useState("");
     const [terminalInput, setInput] = useState("");
     const { input: myInput, titleSlug, language, qid, myoutput, outputStatus: loadingStatus } = useSelector((state) => state.code)
-
+    
 
 
 
@@ -266,7 +266,7 @@ const ResizableRoomPage = () => {
             </Split>
         </>
 
-    )
+)
 
     function toggleTerminal(){
         setClass((val) => {
@@ -278,11 +278,41 @@ const ResizableRoomPage = () => {
             } 
           });
     }
-
+    
     function submit() {
+        toggleTerminal()
         dispatch(submitCode(titleSlug, mycode, myInput, language, qid))
         setType('submit');
         setConsole("")
+        let data;
+        if(myoutput &&myoutput.total_correct!=null&& myoutput.total_testcases!=null&&myoutput.total_correct === myoutput.total_testcases){
+
+            data = {
+                roomname: roomname,
+                author: username,
+                message: `🔥 Submitted  ${title} 🔥`,
+                time:
+                new Date(Date.now()).getHours() +
+                ":" +
+                new Date(Date.now()).getMinutes(),
+            };
+            // setCurrentMessage((list)=>[...list,data])
+            socketRef.current.emit("send_message", data);
+        }
+        
+        if(myoutput &&(myoutput.total_correct!=null|| myoutput.total_testcases!=null||myoutput.total_correct !== myoutput.total_testcases)){
+            data = {
+                roomname: roomname,
+                author: username,
+                message: `❌ Atempted  ${title} ❌`,
+                time:
+                new Date(Date.now()).getHours() +
+                ":" +
+                new Date(Date.now()).getMinutes(),
+            };
+            socketRef.current.emit("send_message", data);
+        }
+
     };
 
     function run() {
@@ -290,6 +320,7 @@ const ResizableRoomPage = () => {
         setType('run');
         setInput(myInput);
         setConsole("")
+        toggleTerminal()
     };
 
     function handleConsole() {
